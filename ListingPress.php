@@ -6,7 +6,7 @@ Plugin URI:   http://www.listingpress.com/
 Description:  Easily embed Real Estate Listings into your blog.
 Version:      1.0.0
 Author:       Jason Benesch
-Author URI:   http://www.jasonbenesch.com/
+Author URI:   http://www.listingpress.com/about
 
 Copyright (C) 2008-2009 Jason Benesch
 	

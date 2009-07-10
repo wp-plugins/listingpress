@@ -359,130 +359,134 @@ class LP_Query {
 		$q = $this->fill_query_vars($q);
 		$url = array();
 		
-		if( $this->is_single_listing ) {			
-			$url['PropertyID'] = $q['listing'];
-		} 
-		else if( $this->is_mlsid_search ) {
-			$url['FeedID'] = ( !empty($q['feed']) ) ? $q['feed'] : $lp_feed;
-			$url['MlsIDs'] = $q['mlsid'];
-		}
-		else if( $this->is_mlsids_search ) {
-			$url['FeedID'] = ( !empty($q['feed']) ) ? $q['feed'] : $lp_feed;
-			$url['MlsIDs'] = $q['mlsids'];
-		} 
-		else {
+		if( $this->is_lp_search ) {
 			
-			if( $this->is_address_search ) {
-				$url['StreetAddress'] = $q['address'];
-				$url['City'] = $q['city']; 	
-				$url['State'] = $q['state'];
-				$url['Zip'] = $q['zip'];
-				$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '10';
+			if( $this->is_single_listing ) {			
+				$url['PropertyID'] = $q['listing'];
+			} 
+			else if( $this->is_mlsid_search ) {
+				$url['FeedID'] = ( !empty($q['feed']) ) ? $q['feed'] : $lp_feed;
+				$url['MlsIDs'] = $q['mlsid'];
 			}
-			else if( $this->is_city_search ) {
-				$url['City'] = $q['city'];
-				$url['State'] = $q['state'];
-			}
-			else if( $this->is_geocode_search ) {
-				$url['CenterLat'] = $q['center_lat'];
-				$url['CenterLon'] = $q['center_lon'];
-				$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '0';
-			}
-			else if( $this->is_geopoint_search ) {
-				$url['CenterPoint'] = $q['center_point']; 	
-				$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '0';
-			}
-			else if( $this->is_neighborhood_search ) {
-				$url['HoodID'] = $q['neighborhood'];
-			}
-			else if( $this->is_polypoint_search ) {
-				$url['PolyPoints'] = $q['poly_points']; 	
-				$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '0';
-			}
-			else if( $this->is_poly_search ) {
-				$url['PolyPointsCSV'] = $q['poly_points_csv']; 
-				$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '0';
-			}
-			else if( $this->is_zip_search ) {
-				$url['Zip'] = $q['zip'];
-			}
+			else if( $this->is_mlsids_search ) {
+				$url['FeedID'] = ( !empty($q['feed']) ) ? $q['feed'] : $lp_feed;
+				$url['MlsIDs'] = $q['mlsids'];
+			} 
+			else {
+			
+				if( $this->is_address_search ) {
+					$url['StreetAddress'] = $q['address'];
+					$url['City'] = $q['city']; 	
+					$url['State'] = $q['state'];
+					$url['Zip'] = $q['zip'];
+					$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '10';
+				}
+				else if( $this->is_city_search ) {
+					$url['City'] = $q['city'];
+					$url['State'] = $q['state'];
+				}	
+				else if( $this->is_geocode_search ) {
+					$url['CenterLat'] = $q['center_lat'];
+					$url['CenterLon'] = $q['center_lon'];
+					$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '0';
+				}
+				else if( $this->is_geopoint_search ) {
+					$url['CenterPoint'] = $q['center_point']; 	
+					$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '0';
+				}
+				else if( $this->is_neighborhood_search ) {
+					$url['HoodID'] = $q['neighborhood'];
+				}
+				else if( $this->is_polypoint_search ) {
+					$url['PolyPoints'] = $q['poly_points']; 	
+					$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '0';
+				}
+				else if( $this->is_poly_search ) {
+					$url['PolyPointsCSV'] = $q['poly_points_csv']; 
+					$url['SearchDistance'] = ( isset($q['distance']) && !empty($q['distance']) ) ? $q['distance'] : '0';
+				}
+				else if( $this->is_zip_search ) {
+					$url['Zip'] = $q['zip'];
+				}
 
-			//Standard to every search
-			$url['PropertyType'] 		= ( !empty($q['proptype']) ) ? $q['proptype'] : '';
-			$url['MinPrice'] 			= ( isset($q['minprice']) && !empty($q['minprice']) ) ? $q['minprice'] : '0';
-			$url['MaxPrice'] 			= ( isset($q['maxprice']) && !empty($q['maxprice']) ) ? $q['maxprice'] : '0';
-			$url['MinSize'] 			= ( isset($q['minsize']) && !empty($q['minsize']) ) ? $q['minsize'] : '0';
-			$url['MaxSize'] 			= ( isset($q['maxsize']) && !empty($q['maxsize']) ) ? $q['maxsize'] : '0'; 
-			$url['Bedrooms']			= ( isset($q['beds']) && !empty($q['beds']) ) ? $q['beds'] : '0';
-			$url['Bathrooms'] 			= ( isset($q['baths']) && !empty($q['baths']) ) ? $q['baths'] : '0';
-			$url['MinYearBuilt'] 		= ( isset($q['minyear']) && !empty($q['minyear']) ) ? $q['minyear'] : '0';
-			$url['MaxYearBuilt'] 		= ( isset($q['maxyear']) && !empty($q['maxyear']) ) ? $q['maxyear'] : '0';
-			$url['SearchableArea1'] 	= ( !empty($q['searchable_area_1']) ) ? $q['searchable_area_1'] : '';
-			$url['SearchableArea2'] 	= ( !empty($q['searchable_area_2']) ) ? $q['searchable_area_2'] : '';
-			$url['SearchableArea3'] 	= ( !empty($q['searchable_area_3']) ) ? $q['searchable_area_3'] : '';
-			$url['View'] 				= ( !empty($q['view']) ) ? $q['view'] : '';
-			$url['Style'] 				= ( !empty($q['style']) ) ? $q['style'] : '';
-			$url['MinLotSize'] 			= ( isset($q['minlotsize']) && !empty($q['minlotsize']) ) ? $q['minlotsize'] : '0';
-			$url['MaxLotSize'] 			= ( isset($q['maxlotsize']) && !empty($q['maxlotsize']) ) ? $q['maxlotsize'] : '0';
-			$url['MinFloors'] 			= ( isset($q['minfloors']) && !empty($q['minfloors']) ) ? $q['minfloors'] : '0';
-			$url['MaxFloors'] 			= ( isset($q['maxfloors']) && !empty($q['maxfloors']) ) ? $q['maxfloors'] : '0';
-			$url['FeatureProfile'] 		= ( !empty($q['features']) ) ? $q['features'] : '';
-			$url['AmenitiesProfile'] 	= ( !empty($q['amenities']) ) ? $q['amenities'] : '';
-			$url['LifestyleProfile'] 	= ( !empty($q['lifestyle']) ) ? $q['lifestyle'] : '';
-			$url['DOM'] 				= ( !empty($q['dom']) ) ? $q['dom'] : '';
-			$url['FeedID'] 				= ( !empty($q['feed']) ) ? $q['feed'] : $lp_feed;
-			$url['AgentID'] 			= ( !empty($q['agent']) ) ? $q['agent'] : '';
-			$url['OfficeID']		 	= ( !empty($q['office']) ) ? $q['office'] : '';
-			$url['AgentName'] 			= ( !empty($q['agent_name']) ) ? $q['agent_name'] : '';
-			$url['OfficeName'] 			= ( !empty($q['office_name']) ) ? $q['office_name'] : '';
-			$url['SpecialFormat'] 		= ( !empty($q['format']) ) ? $q['format'] : '';
-			$url['RecordLimit'] 		= ( isset($q['limit']) && !empty($q['limit']) ) ? $q['limit'] : '2000';
-			$url['Sort'] 				= ( !empty($q['sort']) ) ? $q['sort'] : '';
+				//Standard to every search
+				$url['PropertyType'] 		= ( !empty($q['proptype']) ) ? $q['proptype'] : '';
+				$url['MinPrice'] 			= ( isset($q['minprice']) && !empty($q['minprice']) ) ? $q['minprice'] : '0';
+				$url['MaxPrice'] 			= ( isset($q['maxprice']) && !empty($q['maxprice']) ) ? $q['maxprice'] : '0';
+				$url['MinSize'] 			= ( isset($q['minsize']) && !empty($q['minsize']) ) ? $q['minsize'] : '0';
+				$url['MaxSize'] 			= ( isset($q['maxsize']) && !empty($q['maxsize']) ) ? $q['maxsize'] : '0'; 
+				$url['Bedrooms']			= ( isset($q['beds']) && !empty($q['beds']) ) ? $q['beds'] : '0';
+				$url['Bathrooms'] 			= ( isset($q['baths']) && !empty($q['baths']) ) ? $q['baths'] : '0';
+				$url['MinYearBuilt'] 		= ( isset($q['minyear']) && !empty($q['minyear']) ) ? $q['minyear'] : '0';
+				$url['MaxYearBuilt'] 		= ( isset($q['maxyear']) && !empty($q['maxyear']) ) ? $q['maxyear'] : '0';
+				$url['SearchableArea1'] 	= ( !empty($q['searchable_area_1']) ) ? $q['searchable_area_1'] : '';
+				$url['SearchableArea2'] 	= ( !empty($q['searchable_area_2']) ) ? $q['searchable_area_2'] : '';
+				$url['SearchableArea3'] 	= ( !empty($q['searchable_area_3']) ) ? $q['searchable_area_3'] : '';
+				$url['View'] 				= ( !empty($q['view']) ) ? $q['view'] : '';
+				$url['Style'] 				= ( !empty($q['style']) ) ? $q['style'] : '';
+				$url['MinLotSize'] 			= ( isset($q['minlotsize']) && !empty($q['minlotsize']) ) ? $q['minlotsize'] : '0';
+				$url['MaxLotSize'] 			= ( isset($q['maxlotsize']) && !empty($q['maxlotsize']) ) ? $q['maxlotsize'] : '0';
+				$url['MinFloors'] 			= ( isset($q['minfloors']) && !empty($q['minfloors']) ) ? $q['minfloors'] : '0';
+				$url['MaxFloors'] 			= ( isset($q['maxfloors']) && !empty($q['maxfloors']) ) ? $q['maxfloors'] : '0';
+				$url['FeatureProfile'] 		= ( !empty($q['features']) ) ? $q['features'] : '';
+				$url['AmenitiesProfile'] 	= ( !empty($q['amenities']) ) ? $q['amenities'] : '';
+				$url['LifestyleProfile'] 	= ( !empty($q['lifestyle']) ) ? $q['lifestyle'] : '';
+				$url['DOM'] 				= ( !empty($q['dom']) ) ? $q['dom'] : '';
+				$url['FeedID'] 				= ( !empty($q['feed']) ) ? $q['feed'] : $lp_feed;
+				$url['AgentID'] 			= ( !empty($q['agent']) ) ? $q['agent'] : '';
+				$url['OfficeID']		 	= ( !empty($q['office']) ) ? $q['office'] : '';
+				$url['AgentName'] 			= ( !empty($q['agent_name']) ) ? $q['agent_name'] : '';
+				$url['OfficeName'] 			= ( !empty($q['office_name']) ) ? $q['office_name'] : '';
+				$url['SpecialFormat'] 		= ( !empty($q['format']) ) ? $q['format'] : '';
+				$url['RecordLimit'] 		= ( isset($q['limit']) && !empty($q['limit']) ) ? $q['limit'] : '2000';
+				$url['Sort'] 				= ( !empty($q['sort']) ) ? $q['sort'] : '';
 			
-		}
+			}
 		
-		$api_query_string = $this->build_and_encode( $url );
-		$this->search_url = $lp_host . $this->search_method . '?AccessToken=' . urlencode( $lp_access_token ) . '&TrackingToken=' . urlencode( $_SERVER['HTTP_HOST'] ) . $api_query_string;
+			$api_query_string = $this->build_and_encode( $url );
+			$this->search_url = $lp_host . $this->search_method . '?AccessToken=' . urlencode( $lp_access_token ) . '&TrackingToken=' . urlencode( $_SERVER['HTTP_HOST'] ) . $api_query_string;
 		
-		$fileName = md5( $this->search_url ) . '.xml';
-		if( !lp_cache($fileName) ) {
-			$http = new WP_Http();
-			$xml = $http->request($this->search_url);
-			$xmlString = $xml['body'];
-			$this->parse_xmlString($xmlString);
-			lp_cache_write($fileName, $xmlString);
-		} else {
-			$this->parse_xmlFile($fileName);
-		}
+		
+			$fileName = md5( $this->search_url ) . '.xml';
+			if( !lp_cache($fileName) ) {
+				$http = new WP_Http();
+				$xml = $http->request($this->search_url);
+				$xmlString = $xml['body'];
+				$this->parse_xmlString($xmlString);
+				lp_cache_write($fileName, $xmlString);
+			} else {
+				$this->parse_xmlFile($fileName);
+			}
 	
-		$this->current_page = absint( $q['paged'] );
-		if( empty($this->current_page) ) {
-			$this->current_page = 1;
-		}
+			$this->current_page = absint( $q['paged'] );
+			if( empty($this->current_page) ) {
+				$this->current_page = 1;
+			}
 		
-		if( isset($q['showlistings']) && !empty($q['showlistings']) ) {
-			$per_page = absint( $q['showlistings'] );
-		} else {
-			$q = get_option('ListingPressQuery');
-			$per_page = ( !empty( $q['lp_per_page'] ) ) ? $q['lp_per_page'] : 10;
-		}
+			if( isset($q['showlistings']) && !empty($q['showlistings']) ) {
+				$per_page = absint( $q['showlistings'] );
+			} else {
+				$q = get_option('ListingPressQuery');
+				$per_page = ( !empty( $q['lp_per_page'] ) ) ? $q['lp_per_page'] : 10;
+			}
  
-		$start = ($this->current_page - 1) * $per_page;
-		$finish = $start + $per_page;
-		$this->found_listings = count( $this->total_listings );
-		$finish = ($finish > $this->found_listings) ? $this->found_listings : $finish;
-		for( $i = $start; $i < $finish; $i++ ) {
-			$this->listings[] = $this->total_listings[$i];
-		}
+			$start = ($this->current_page - 1) * $per_page;
+			$finish = $start + $per_page;
+			$this->found_listings = count( $this->total_listings );
+			$finish = ($finish > $this->found_listings) ? $this->found_listings : $finish;
+			for( $i = $start; $i < $finish; $i++ ) {
+				$this->listings[] = $this->total_listings[$i];
+			}
 		
-		$this->listing_count = count( $this->listings );
-		$this->max_num_pages = ceil($this->found_listings / $per_page);
+			$this->listing_count = count( $this->listings );
+			$this->max_num_pages = ceil($this->found_listings / $per_page);
 		
-		if ($this->listing_count > 0) {
-			$this->listing = $this->listings[0];
-		}
+			if ($this->listing_count > 0) {
+				$this->listing = $this->listings[0];
+			}
 
-		return $this->listings;
+			return $this->listings;
+		}
 	}
 	
 	function next_listing() {

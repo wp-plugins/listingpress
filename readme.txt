@@ -1,10 +1,10 @@
 === ListingPress ===
 Contributors: jasonbenesch
 Donate link: http://listingpress.com/registration
-Tags: real estate, listings
+Tags: real estate, listings, seo
 Requires at least: 2.7
 Tested up to: 2.8
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
 ListingPress automatically embeds real estate listings on to a wordpress blog.
 

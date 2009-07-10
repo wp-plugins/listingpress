@@ -22,7 +22,7 @@ add_action( 'template_redirect', 'lp_template' );
 global $lpvars;	
 if( !empty($lpvars['lp_maps']) && !is_admin() ) {
 	$path = 'http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true&amp;key='. $lpvars['lp_maps'];
-	$jmaps = plugins_url('ListingPress/resources/js/jquery.jmap.min.js');
+	$jmaps = plugins_url('listingpress/resources/js/jquery.jmap.min.js');
 
 	wp_enqueue_script( 'LP_GMaps', $path, '', '2.0' );
 	wp_enqueue_script( 'jmaps', $jmaps, '', '0.72' );

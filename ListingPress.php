@@ -49,8 +49,8 @@ Copyright (C) 2008-2009 Jason Benesch
 
 ******************************************************************************/
 
-require_once( 'LP_Registration.php' );
-require_once( 'LP_Admin.php' );
+require_once( 'lp_registration.php' );
+require_once( 'lp_admin.php' );
 
 if( lp_is_registered() ) {
 
@@ -61,21 +61,21 @@ if( lp_is_registered() ) {
 	$lpvars = get_option('ListingPressQuery');
 	
 	if( !is_admin() ) {
-		wp_enqueue_style( 'jquery-custom', plugins_url('ListingPress/resources/css/custom-theme/jquery-ui-1.7.2.custom.css'), '', '1.7.2', 'screen' );
-		wp_enqueue_style( 'listingpress', plugins_url('ListingPress/resources/css/listingpress.css'), '', '1.0', 'screen' );
+		wp_enqueue_style( 'jquery-custom', plugins_url('listingpress/resources/css/custom-theme/jquery-ui-1.7.2.custom.css'), '', '1.7.2', 'screen' );
+		wp_enqueue_style( 'listingpress', plugins_url('listingpress/resources/css/listingpress.css'), '', '1.0', 'screen' );
 		wp_deregister_script( 'jquery' );
-		wp_enqueue_script( 'jquery-1.3.2', plugins_url('ListingPress/resources/js/jquery-1.3.2.min.js'), '', '1.3.2' );
-		wp_enqueue_script( 'jquery-ui-1.7.2', plugins_url('ListingPress/resources/js/jquery-ui-1.7.2.custom.min.js'), '', '1.7.2' );
+		wp_enqueue_script( 'jquery-1.3.2', plugins_url('listingpress/resources/js/jquery-1.3.2.min.js'), '', '1.3.2' );
+		wp_enqueue_script( 'jquery-ui-1.7.2', plugins_url('listingpress/resources/js/jquery-ui-1.7.2.custom.min.js'), '', '1.7.2' );
 		wp_enqueue_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js', '', '2.2' );
 	}
 	
-	require_once( 'LP_Cache.php' );
-	require_once( 'LP_Query.php' );
-	require_once( 'LP_TemplateFunctions.php' );
-	require_once( 'LP_Lookups.php' );
-	require_once( 'LP_Rewrites.php' );
-	require_once( 'LP_Template.php' );
-	require_once( 'LP_Login.php' );
+	require_once( 'lp_cache.php' );
+	require_once( 'lp_query.php' );
+	require_once( 'lp_functions.php' );
+	require_once( 'lp_lookups.php' );
+	require_once( 'lp_rewrites.php' );
+	require_once( 'lp_template.php' );
+	require_once( 'lp_login.php' );
 		
 }
 

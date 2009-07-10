@@ -75,7 +75,7 @@ add_action( 'wp_ajax_listingpress', 'lp_ajax_post_handler' );
 
 function lp_add_options() {
 	add_options_page('ListingPress Options', 'ListingPress', 8, 'lpoptions', 'lp_options_page');
-	add_options_page('ListingPress Forms', 'LP Forms', 8, 'lpforms', 'lp_forms_page');
+	//add_options_page('ListingPress Forms', 'LP Forms', 8, 'lpforms', 'lp_forms_page');
 }
 add_action('admin_menu', 'lp_add_options');
 

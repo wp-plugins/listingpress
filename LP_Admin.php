@@ -82,7 +82,7 @@ add_action('admin_menu', 'lp_add_options');
 
 
 function lp_forms_page() {
-	$loading_img = plugins_url('ListingPressDev/resources/images/ajax.gif');
+	$loading_img = plugins_url('listingpress/resources/images/ajax.gif');
 	//$forms = get_option('ListingPressForms');
 	
 	//$fid = $_GET['lpfid'];
@@ -104,7 +104,7 @@ function lp_forms_page() {
  * Our ListingPress Settings Page
  */
 function lp_options_page() {
-	$loading_img = plugins_url('ListingPressDev/resources/images/ajax.gif');
+	$loading_img = plugins_url('listingpress/resources/images/ajax.gif');
 	$s = get_option('ListingPressSettings');
 	$q = get_option('ListingPressQuery');
 ?>

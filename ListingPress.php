@@ -4,7 +4,7 @@
 Plugin Name:  ListingPress
 Plugin URI:   http://www.listingpress.com/
 Description:  Easily embed Real Estate Listings into your blog.
-Version:      1.0.0
+Version:      1.0.2
 Author:       Jason Benesch
 Author URI:   http://www.listingpress.com/about
 
@@ -75,7 +75,7 @@ if( lp_is_registered() ) {
 	require_once( 'lp_lookups.php' );
 	require_once( 'lp_rewrites.php' );
 	require_once( 'lp_template.php' );
-	require_once( 'lp_login.php' );
+	//require_once( 'lp_login.php' );
 		
 }
 

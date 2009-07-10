@@ -515,8 +515,10 @@ class LP_Query {
 	}
 	
 	function &query($query) {
-		$this->parse_query($query);
-		return $this->get_listings();
+		if(!empty($query)) {
+			$this->parse_query($query);
+			return $this->get_listings();
+		}
 	}
 	
 	function LP_Query($query = '') {

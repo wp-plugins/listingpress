@@ -4,7 +4,7 @@ Donate link: http://listingpress.com/registration
 Tags: real estate, listings, seo
 Requires at least: 2.7
 Tested up to: 2.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 
 ListingPress automatically embeds real estate listings on to a wordpress blog.
 
@@ -18,8 +18,8 @@ To install this plugin we recommend creating two more templates; listings.php an
 
 == Installation ==
 
-1. Upload the entire directory 'ListingPress' to the /wp-content/plugins/ directory so it should look like this -> /wp-content/plugins/ListingPress
-2. Ensure that a cache folder exists and is writable by the server -> /wp-content/plugins/ListingPress/cache
+1. Upload the entire directory 'listingpress' to the /wp-content/plugins/ directory so it should look like this -> /wp-content/plugins/listingpress
+2. Ensure that a cache folder exists and is writable by the server -> /wp-content/plugins/listingpress/cache
 3. Activate the plugin through the 'Plugins' menu in the WordPress Administration.
 4. Enter your registration code under the ListingPress Settings page.
 
@@ -46,7 +46,11 @@ Visit http://listingpress.com/registration to get a registration code.
 == Changelog ==
 
 = 1.0.1 =
-* Changed every file to all lowercase letters
+* Changed every file to all lowercase letters to be more inline with how WP runs things.
+
+= 1.0.2 =
+* Updated lp_query.php -> added an if statement to lp_query->query to prevent the query if the query_string is blank.
+* Commented out the lp forms api until it is completely finished.
 
 
 

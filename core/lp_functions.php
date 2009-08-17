@@ -131,6 +131,14 @@ function the_primary_photo($class, $thumb = false) {
 	echo '<div class="' . $class . '"><img src="' . $img . '" alt="' . $listing['OB_ADDRESS'] . '" /></div>';
 }
 
+function get_the_primary_photo() {
+	global $listing, $lp_feed;
+	$img = 'http://images.obiwebservices.com/listings/' . $lp_feed . '/';
+	$img .= ($thumb) ? 'thumbs/' : 'photos/'; 
+	$img .= $listing['OB_PHOTO_PRIMARY'];
+	return $img;
+}
+
 function listing_has_photos() {
 	global $listing;
 	return ( $listing['OB_PHOTO_COUNT'] > 0 ) ? true : false;

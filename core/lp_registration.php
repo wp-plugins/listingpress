@@ -66,7 +66,7 @@ class LP_Registration {
 	}
 	
 	function revalidate() {
-		$url = 'http://www.listingpress.com/lp-access-token.php?rc=' . $this->registration_code . '&dm=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&vn=' . urlencode( $this->current_version );
+		$url = 'http://www.listingpress.com/dev-lp-access-token.php?rc=' . $this->registration_code . '&dm=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&vn=' . urlencode( $this->current_version );
 		$http = new WP_Http();
 		$validate = $http->request($url);
 		$xml = $validate['body'];

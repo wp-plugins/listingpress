@@ -1,5 +1,12 @@
 <?php
 
+function lp_query_vars( $query_vars ) {
+	$myvars = array( 'listing', 'mlsid', 'mlsids', 'address', 'city', 'citystate', 'county', 'state', 'zip', 'zipstate', 'proptype', 'minprice', 'maxprice', 'minsize', 'maxsize', 'beds', 'baths', 'minyear', 'maxyear', 'agent', 'office', 'minlotsize', 'maxlotsize', 'minfloors', 'maxfloors', 'sort', 'limit', 'distance', 'center_lat', 'center_lon', 'center_point', 'neighborhood', 'poly_points', 'poly_points_csv', 'searchable_area_1', 'searchable_area_2', 'searchable_area_3', 'view', 'style', 'features', 'amenities', 'lifestyle', 'dom', 'feed_id', 'agent_id', 'office_id', 'format', 'display', 'showlistings' );
+	$query_vars = array_merge( $query_vars, $myvars );
+	return $query_vars;
+}
+add_filter( 'query_vars', 'lp_query_vars' );
+
 function lp_flush_rewrite_rules() {
 	global $wp_rewrite;
 	$wp_rewrite->flush_rules();
@@ -72,11 +79,6 @@ function lp_add_rewrite_rules( $wp_rewrite ) {
 }
 add_action( 'generate_rewrite_rules', 'lp_add_rewrite_rules' );
 	
-function lp_query_vars( $query_vars ) {
-	$myvars = array( 'listing', 'mlsid', 'mlsids', 'address', 'city', 'state', 'zip', 'proptype', 'minprice', 'maxprice', 'minsize', 'maxsize', 'beds', 'baths', 'minyear', 'maxyear', 'agent', 'office', 'minlotsize', 'maxlotsize', 'minfloors', 'maxfloors', 'sort', 'limit', 'distance', 'center_lat', 'center_lon', 'center_point', 'neighborhood', 'poly_points', 'poly_points_csv', 'searchable_area_1', 'searchable_area_2', 'searchable_area_3', 'view', 'style', 'features', 'amenities', 'lifestyle', 'dom', 'feed', 'agent_id', 'office_id', 'format', 'display', 'showlistings' );
-	$query_vars = array_merge( $query_vars, $myvars );
-	return $query_vars;
-}
-add_filter( 'query_vars', 'lp_query_vars' );
+
 		
 ?>

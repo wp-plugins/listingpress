@@ -211,6 +211,7 @@ class LP_Lookups {
 	}
 	
 	function process($url) {
+		unset( $this->results );
 		$fileName = md5( $url ) . '.xml';
 		if( !lp_cache($fileName) ) {
 			$http = new WP_Http();

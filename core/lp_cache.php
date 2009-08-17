@@ -122,7 +122,7 @@ class LP_Cache {
 		if( defined('CACHE_PATH') ) {
 			$this->cache_dir = CACHE_PATH;
 		} else {
-			$this->cache_dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$lp_feed.DIRECTORY_SEPARATOR;
+			$this->cache_dir = dirname( dirname(__FILE__) ).DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$lp_feed.DIRECTORY_SEPARATOR;
 		}
 
 		if( is_writable($this->cache_dir) && is_dir($this->cache_dir) ) {

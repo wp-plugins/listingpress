@@ -462,7 +462,6 @@ class LP_Query {
 		
 		$api_query_string = $this->build_and_encode( $url );
 		$this->search_url = $lp_host . $this->search_method . '?AccessToken=' . urlencode( $lp_access_token ) . '&TrackingToken=' . urlencode( $_SERVER['HTTP_HOST'] ) . $api_query_string;
-		echo $this->search_url;
 		
 		$fileName = md5( $this->search_url ) . '.xml';
 		if( !lp_cache($fileName) ) {

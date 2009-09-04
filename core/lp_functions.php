@@ -844,7 +844,7 @@ function previous_listings($str) {
 
 function next_listings($str) {
 	//$permalink = get_option('permalink_structure');
-	$total_pages = lp_max_num_pages();
+	$total_pages = lp_total_pages();
 	$current_page = lp_current_page();
 	$req = substr( $_SERVER["REQUEST_URI"], stripos($_SERVER["REQUEST_URI"], '/?'), strlen($_SERVER["REQUEST_URI"]) );
 	$qv = array();

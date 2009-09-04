@@ -1,0 +1,97 @@
+#lp_menu_bar {
+	margin:0px;
+	padding:0px;
+	position:fixed;
+	left:0px;
+	bottom:0px;
+	height:30px;
+	width:100%;
+	z-index:999;
+}
+
+#lp_menu_bar ul {
+	margin:0px auto;
+	padding:0px;
+	list-style:none;
+	width:900px;
+	height:30px;
+	-moz-border-radius-bottomleft:4px;
+	-moz-border-radius-bottomright:4px;
+	-moz-border-radius-topleft:4px;
+	-moz-border-radius-topright:4px;
+	-moz-box-sizing:content-box;
+	border-style:solid;
+	border-width:1px;
+	cursor:pointer;
+	font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+	font-size:11px !important;
+	line-height:16px;
+	padding:2px 8px;
+	text-decoration:none;
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:#F2F2F2 url(../images/white-grad.png) repeat-x scroll left top;
+	border-color:#BBBBBB;
+	color:#464646;
+}
+
+#lp_menu_bar ul li {
+	float:left;
+}
+
+#lp_menu_bar ul li a {
+	margin:0px 5px;
+	padding:0px;
+	float:left;
+	height:25px;
+	width:20px;
+	text-indent:-9999em;
+	display:block;
+}
+
+#lp_menu_bar ul li a#menu_bar_map_search { background: url(../icons/heart.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_image_search { background: url(../icons/picture.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_favorites { background: url(../icons/printer.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_recommended { background: url(../icons/page_white_edit.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_connect { background: url(../icons/comments.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_notes { background: url(../icons/report.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_events { background: url(../icons/calendar_view_day.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_notifications { background: url(../icons/images.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_chat { background: url(../icons/vcard.png) center center no-repeat; }
+#lp_menu_bar ul li a#menu_bar_contact_us { background: url(../icons/telephone.png) center center no-repeat; }
+/*
+printer
+page_white_edit
+images
+heart_add
+camera
+chart_bar
+chart_curve
+chart_pie
+calculator
+book
+*/
+
+.lp_button {
+	-moz-border-radius-bottomleft:11px;
+	-moz-border-radius-bottomright:11px;
+	-moz-border-radius-topleft:11px;
+	-moz-border-radius-topright:11px;
+	border: 1px solid #BBBBBB;
+	cursor:pointer;
+	font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+	font-size:11px !important;
+	line-height:1.2em;
+	padding:4px 10px;
+	text-decoration:none;
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:#F2F2F2 url(../images/white-grad.png) repeat-x scroll left top;
+	color:#464646;
+}
+
+.lp_button:hover {
+	text-decoration:none;
+}

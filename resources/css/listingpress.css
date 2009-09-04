@@ -1,0 +1,51 @@
+a.listing_icons {
+	margin: 0px;
+	padding: 0px 0px 5px 20px;
+	display:block;
+	height:15px;
+}
+
+a.lp_bookmark_listing { background: url(../icons/heart_add.png) 0px 0px no-repeat; }
+a.lp_email_listing { background: url(../icons/email.png) 0px 0px no-repeat; }
+a.lp_print_listing { background: url(../icons/printer.png) 0px 0px no-repeat; }
+a.lp_text_listing { background:url(../icons/phone.png) 0px 0px no-repeat; }
+a.lp_slideshow_listing { background:url(../icons/picture.png) 0px 0px no-repeat; }
+a.lp_map_listing { background:url(../icons/map.png) 0px 0px no-repeat; }
+a.lp_link_listing { background:url(../icons/house_link.png) 0px 0px no-repeat; }
+a.lp_house_listing { background:url(../icons/house.png) 0px 0px no-repeat; }
+a.lp_house_go_listing { background:url(../icons/house_go.png) 0px 0px no-repeat; } 
+a.lp_details_listing { background:url(../icons/chart_pie.png) 0px 0px no-repeat; }
+
+.lp_hide table { margin:0 auto; width:220px; }
+.lp_hide table tr td { text-align:left; }
+.lp_hide table tr td.txtright { text-align:right; }
+.lp_hide table tr td.txtcenter { text-align:center; }
+.lp_hide button {
+	cursor:pointer;
+	line-height:1.4em;
+	margin:0.5em 0.4em 0.5em 0;
+	overflow:visible;
+	padding:0.2em 0.6em 0.3em;
+	width:auto;
+}
+
+.gmap_bubble {
+	margin:0px;
+	padding:0px;
+	width:300px;
+	height:100px;
+	display:block;
+	text-align:left;
+}
+
+.gmap_bubble img {
+	float:left;
+	margin-right:8px;
+}
+
+.gmap_bubble ul {
+	margin:0px;
+	padding:0px;
+	list-style:none;
+}
+

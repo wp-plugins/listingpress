@@ -4,7 +4,7 @@
 Plugin Name:  ListingPress
 Plugin URI:   http://www.listingpress.com/
 Description:  Easily embed Real Estate Listings into your blog.
-Version:      1.0.3
+Version:      1.0.4
 Author:       Jason Benesch
 Author URI:   http://www.jasonbenesch.com/
 
@@ -68,6 +68,15 @@ if( lp_is_registered() ) {
 	$GLOBALS['lp_host'] = lp_host();
 	$GLOBALS['lp_feed'] = lp_feed();
 	$lpvars = get_option('ListingPressQuery');
+	
+	define( 'LP_ACCESS_TOKEN', lp_access_token() );
+	define( 'LP_HOST', lp_host() );
+	define( 'LP_FEED_ID', lp_feed() );
+	define( 'LP_PER_PAGE', $lpvars['lp_per_page'] );
+	define( 'LP_GMAP_API', $lpvars['lp_maps'] );
+	define( 'LP_ZILLOW_API', $lpvars['lp_zillow'] );
+	define( 'LP_EDU_API', $lpvars['lp_education'] );
+	define( 'LP_MENU_BAR', $lpvars['lp_menu_bar'] );
 
 	/* Core Files */
 	require_once( 'core/lp_cache.php' );
@@ -76,7 +85,40 @@ if( lp_is_registered() ) {
 	require_once( 'core/lp_lookups.php' );
 	require_once( 'core/lp_rewrites.php' );
 	require_once( 'core/lp_template.php' );
-	/* Core Files */
+	
+	/* ListingPress User Authentication */
+	require_once( 'users/lp_user_auth.php' );
+	
+	/* Google Maps API */
+	if( defined('LP_GMAP_API') && constant('LP_GMAP_API') != '' ) {
+		require_once( 'google/lp_maps.php' );
+	}
+	
+	/* Zillow API */
+	if( defined('LP_ZILLOW_API') && constant('LP_ZILLOW_API') != '' ) {
+		require_once( 'zillow/zws_query.php' );
+		require_once( 'zillow/zws_functions.php' );
+		//require_once( 'zillow/zws_rewrites.php' );
+		//require_once( 'zillow/zws_template.php' );
+	}
+	
+	/* ListingPress Menu Bar */
+	if( defined('LP_MENU_BAR') && constant('LP_MENU_BAR') == 'show' ) {
+		require_once( 'menu/lp_menu_bar.php' );
+	}
+	
+	/* Facebook Connect API */
+	//require_once( 'connect/fbconnect.php' );
+	/* Facebook Connect API */
+	
+	/* Education API */
+	//require_once( 'education/edu_query.php' );
+	//require_once( 'education/edu_functions.php' );
+	/* Education API */
+	
+	/* ListingPress Shortcode */
+	//require_once( 'shortcode/lp_shortcode.php' );
+	/* ListingPress Shortcode */
 		
 }
 

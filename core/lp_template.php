@@ -3,7 +3,7 @@
 function lp_template() {
 	global $wp;
 	query_listings($wp->query_string);
-		
+	
 	if( is_lp_json() ) {
 		echo lp_json_results(); 
 		exit;

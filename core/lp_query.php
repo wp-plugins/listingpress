@@ -133,14 +133,14 @@ function the_listing() {
 	$lp_query->the_listing();
 }
 
+function lp_total_pages() {
+	global $lp_query;
+	return $lp_query->max_num_pages;
+}
+
 function lp_json_results() {
 	global $lp_query;
 	return json_encode( $lp_query->listings );
-}
-
-function lp_max_num_pages() {
-	global $lp_query;
-	return $lp_query->max_num_pages;
 }
 
 function lp_current_page() {
@@ -213,7 +213,7 @@ class LP_Query {
 	}
 	
 	function fill_query_vars($array) {
-		$keys = array('listing', 'mlsid', 'mlsids', 'address', 'city', 'citystate', 'county', 'state', 'zip', 'zipstate', 'distance', 'neighborhood', 'proptype', 'minprice', 'maxprice', 'minsize', 'maxsize', 'beds', 'baths', 'minyear', 'maxyear', 'features', 'amenities', 'lifestyle', 'dom', 'agent', 'office', 'agent_id', 'office_id', 'limit', 'searchable_area_1', 'searchable_area_2', 'searchable_area_3', 'view', 'style', 'minlotsize', 'maxlotsize', 'minfloors', 'maxfloors', 'center_lat', 'center_lon', 'center_point', 'poly_points', 'poly_points_csv', 'feed_id', 'format', 'sort', 'paged', 'showlistings', 'display');
+		$keys = array('listing', 'mlsid', 'mlsids', 'address', 'city', 'citystate', 'county', 'state', 'zip', 'zipstate', 'distance', 'neighborhood', 'proptype', 'minprice', 'maxprice', 'minsize', 'maxsize', 'beds', 'baths', 'minyear', 'maxyear', 'features', 'amenities', 'lifestyle', 'dom', 'agent', 'office', 'agent_id', 'office_id', 'limit', 'searchable_area_1', 'searchable_area_2', 'searchable_area_3', 'view', 'style', 'minlotsize', 'maxlotsize', 'minfloors', 'maxfloors', 'center_lat', 'center_lon', 'center_point', 'poly_points', 'poly_points_csv', 'feed_id', 'format', 'sort', 'lpage', 'showlistings', 'display');
 		
 		foreach( $keys as $key ) {
 			if( !isset($array[$key]) )
@@ -455,7 +455,7 @@ class LP_Query {
 			$url['AgentName'] 			= ( !empty($q['agent_name']) ) ? $q['agent_name'] : '';
 			$url['OfficeName'] 			= ( !empty($q['office_name']) ) ? $q['office_name'] : '';
 			$url['SpecialFormat'] 		= ( !empty($q['format']) ) ? $q['format'] : '';
-			$url['RecordLimit'] 		= ( isset($q['limit']) && !empty($q['limit']) ) ? $q['limit'] : '2000';
+			$url['RecordLimit'] 		= ( isset($q['limit']) && !empty($q['limit']) ) ? $q['limit'] : '1500';
 			$url['Sort'] 				= ( !empty($q['sort']) ) ? $q['sort'] : '';
 			
 		}
@@ -474,7 +474,7 @@ class LP_Query {
 			$this->parse_xmlFile($fileName);
 		}
 	
-		$this->current_page = absint( $q['paged'] );
+		$this->current_page = absint( $q['lpage'] );
 		if( empty($this->current_page) ) {
 			$this->current_page = 1;
 		}
@@ -535,7 +535,8 @@ class LP_Query {
 	
 	function &query($query) {
 		$this->parse_query($query);
-		return $this->get_listings();
+		if( !$this->is_404 )
+			return $this->get_listings();
 	}
 	
 	function LP_Query($query = '') {

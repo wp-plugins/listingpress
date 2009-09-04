@@ -18,7 +18,8 @@ function lp_ajax_post_handler() {
 	$q['lp_office'] = ( isset($_POST['lp_office']) && !empty($_POST['lp_office']) ) ? $_POST['lp_office'] : $q['lp_office'];
 	$q['lp_maps'] = ( isset($_POST['lp_maps']) && !empty($_POST['lp_maps']) ) ? $_POST['lp_maps'] : $q['lp_maps'];
 	$q['lp_zillow'] = ( isset($_POST['lp_zillow']) && !empty($_POST['lp_zillow']) ) ? $_POST['lp_zillow'] : $q['lp_zillow'];
-	$q['lp_education'] = ( isset($_POST['lp_education']) && !empty($_POST['lp_education']) ) ? $_POST['lp_education'] : $q['lp_education'];		
+	$q['lp_education'] = ( isset($_POST['lp_education']) && !empty($_POST['lp_education']) ) ? $_POST['lp_education'] : $q['lp_education'];
+	$q['lp_menu_bar'] = $_POST['lp_menu_bar'];		
 	update_option( 'ListingPressQuery', $q );
 	echo 'Your settings have been successfully saved!';
 }
@@ -108,6 +109,16 @@ function lp_general_settings() {
 						<br />This is your Education.com API key so you can embed local school data in to your site. You can obtain a key by going here: <a href="http://www.education.com/schoolfinder/tools/webservice/" target="_blank">Education.com API Key</a>
 					</td>
 				</tr>
+				<tr valign="top">
+					<th scope="row">ListingPress Menu Bar</th>
+					<td>
+						<select name="lp_menu_bar" id="lp_menu_bar"> 
+							<option value="show" <?php if( $q['lp_menu_bar'] == 'show' ) { echo 'SELECTED'; } ?>>Yes &nbsp;</option> 
+							<option value="hide" <?php if( $q['lp_menu_bar'] == 'hide' ) { echo 'SELECTED'; } ?>>No &nbsp;</option> 
+						</select>
+						&nbsp; <label for="lp_menu_bar">Would you like to display the ListingPress Menu Bar?</label>
+					</td>
+				</tr>
 			</table>
 			
 			<p class="submit">
@@ -130,6 +141,7 @@ function lp_general_settings() {
 						lp_maps: $('input#lp_maps').val(),
 						lp_zillow: $('input#lp_zillow').val(),
 						lp_education: $('input#lp_education').val(),
+						lp_menu_bar: $('select#lp_menu_bar').val(),
 						cookie: encodeURIComponent(document.cookie),
 						_ajax_nonce: $('input#lp_settings_nonce').val()
 					},

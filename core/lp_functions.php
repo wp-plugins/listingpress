@@ -3,7 +3,7 @@
 /* Listings Search */
 function the_address() {
 	global $listing;
-	echo $listing['OB_ADDRESS'];
+	echo $listing['ADDRESS'];
 }
 
 function the_listing_id() {
@@ -122,13 +122,23 @@ function get_the_photo_count() {
 	return $listing['OB_PHOTO_COUNT'];
 }
 
+function listing_has_photos() {
+	global $listing;
+	return ( $listing['OB_PHOTO_COUNT'] > 0 ) ? true : false;
+}
+
 function the_primary_photo($class, $thumb = false) {
 	global $listing, $lp_feed;
 	$img = 'http://images.obiwebservices.com/listings/' . $lp_feed . '/';
 	$img .= ($thumb) ? 'thumbs/' : 'photos/'; 
 	$img .= $listing['OB_PHOTO_PRIMARY'];
 	$class = (!empty($class)) ? $class : 'lp_primary_photo';
-	echo '<div class="' . $class . '"><img src="' . $img . '" alt="' . $listing['OB_ADDRESS'] . '" /></div>';
+	$default = plugins_url('listingpress/resources/images/emptyhouse.jpg');
+	if( listing_has_photos() ) {
+		echo '<div class="' . $class . '"><img src="' . $img . '" alt="' . $listing['OB_ADDRESS'] . '" /></div>';
+	} else {
+		echo '<div class="' . $class . '"><img src="' . $default . '" alt="' . $listing['OB_ADDRESS'] . '" /></div>';
+	}
 }
 
 function get_the_primary_photo() {
@@ -137,11 +147,6 @@ function get_the_primary_photo() {
 	$img .= ($thumb) ? 'thumbs/' : 'photos/'; 
 	$img .= $listing['OB_PHOTO_PRIMARY'];
 	return $img;
-}
-
-function listing_has_photos() {
-	global $listing;
-	return ( $listing['OB_PHOTO_COUNT'] > 0 ) ? true : false;
 }
 
 function the_listing_photos($num, $class, $thumb = false) {
@@ -217,7 +222,7 @@ function the_listing_date() {
 /* Single Listing Search */
 function the_original_sales_price() {
 	global $listing;
-	echo $listing['ORIGINALLISTINGPRICE'];
+	echo '$' . str_replace( '.00', '', number_format($listing['ORIGINALLISTINGPRICE'], 2) );
 }
 
 function the_year_built() {
@@ -451,12 +456,286 @@ function the_dom() {
 	echo $listing['DOM'];
 }
 
+function list_all_details() {
+	global $listing;
+	echo '<p>';
+	if( !empty($listing['FTR_REGION_DESC']) )
+		echo 'Region Description: <strong>' . $listing['FTR_REGION_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_SUBDIST_DESC']) )
+		echo 'Sub District: <strong>' . $listing['FTR_SUBDIST_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_CONSTRUCTION_DESC']) )
+		echo 'Construction: <strong>' . $listing['FTR_CONSTRUCTION_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_EXTERIOR_DESC']) )
+		echo 'Exterior: <strong>' . $listing['FTR_EXTERIOR_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_FLOORS_DESC']) )
+		echo 'Floors: <strong>' . $listing['FTR_FLOORS_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_FOUNDATION_DESC']) )
+		echo 'Foundation: <strong>' . $listing['FTR_FOUNDATION_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_MAIN_LEVEL_DESC']) )
+		echo 'Main Level Description: <strong>' . $listing['FTR_MAIN_LEVEL_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_LOWER_LEVEL_DESC']) )
+		echo 'Lower Level Description: <strong>' . $listing['FTR_LOWER_LEVEL_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_UPPER_LEVEL_DESC']) )
+		echo 'Upper Level Description: <strong>' . $listing['FTR_UPPER_LEVEL_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_WATER_SEWER_DESC']) )
+		echo 'Sewer Description: <strong>' . $listing['FTR_WATER_SEWER_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_SPRINKLERS_DESC']) )
+		echo 'Sprinklers: <strong>' . $listing['FTR_SPRINKLERS_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_WATERSOURCE_DESC']) )
+		echo 'Water: <strong>' . $listing['FTR_WATERSOURCE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_UTILITIES_DESC']) )
+		echo 'Utilities: <strong>' . $listing['FTR_UTILITIES_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_ROOF_DESC']) )
+		echo 'Roof: <strong>' . $listing['FTR_ROOF_DESC'] . '</strong><br />';
+	
+	if( !empty($listing['FTR_POOL_DESC']) )
+		echo 'Pool: <strong>' . $listing['FTR_POOL_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_RECREATION_DESC']) )
+		echo 'Recreation Area: <strong>' . $listing['FTR_RECREATION_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_RENT_TYPE_DESC']) )
+		echo 'Rent Description: <strong>' . $listing['FTR_RENT_TYPE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_RENT_SOURCE_DESC']) )
+		echo 'Rent Source: <strong>' . $listing['FTR_RENT_SOURCE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_SHOPPING_DESC']) )
+		echo 'Shopping Description: <strong>' . $listing['FTR_SHOPPING_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_TRANSPORTATION_DESC']) )
+		echo 'Transportation Description: <strong>' . $listing['FTR_TRANSPORTATION_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_SPECIAL_FEATURE_DESC']) )
+		echo 'Special Features: <strong>' . $listing['FTR_SPECIAL_FEATURE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_STYLE_DESC']) )
+		echo 'Style of Home: <strong>' . $listing['FTR_STYLE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_TYPE_DESC']) )
+		echo 'Type: <strong>' . $listing['FTR_TYPE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_FIREPLACE_DESC']) )
+		echo 'Fireplace Description: <strong>' . $listing['FTR_FIREPLACE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_MASTER_BED_DESC']) )
+		echo 'Master Bedroom: <strong>' . $listing['FTR_MASTER_BED_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_MASTER_BATH_DESC']) )
+		echo 'Master Bathroom: <strong>' . $listing['FTR_MASTER_BATH_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_BATH_DESC']) )
+		echo 'Bathroom: <strong>' . $listing['FTR_BATH_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_KITCHEN_DESC']) )
+		echo 'Kitchen: <strong>' . $listing['FTR_KITCHEN_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_MICROWAVE_DESC']) )
+		echo 'Microwave: <strong>' . $listing['FTR_MICROWAVE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_TRASH_COMPACTOR_DESC']) )
+		echo 'Trash Compactor: <strong>' . $listing['FTR_TRASH_COMPACTOR_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_RANGE_OVEN_DESC']) )
+		echo 'Range Oven: <strong>' . $listing['FTR_RANGE_OVEN_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_REFRIG_DESC']) )
+		echo 'Refrigerator: <strong>' . $listing['FTR_REFRIG_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_STOVE_INSERT_DESC']) )
+		echo 'Stove: <strong>' . $listing['FTR_STOVE_INSERT_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_LAUNDRY_DESC']) )
+		echo 'Laundry: <strong>' . $listing['FTR_LAUNDRY_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_OTHER_ROOM_DESC']) )
+		echo 'Other Rooms: <strong>' . $listing['FTR_OTHER_ROOM_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_MISCELLANEOUS_DESC']) )
+		echo 'Misc: <strong>' . $listing['FTR_MISCELLANEOUS_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_TOPOGRAPHY_DESC']) )
+		echo 'Topography: <strong>' . $listing['FTR_TOPOGRAPHY_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_OTHER_STRUCTURE_DESC']) )
+		echo 'Other Structures: <strong>' . $listing['FTR_OTHER_STRUCTURE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_GARAGE_DESC']) )
+		echo 'Garage: <strong>' . $listing['FTR_GARAGE_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_PARKING_DESC']) )
+		echo 'Parking: <strong>' . $listing['FTR_PARKING_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_SALE_CONDITIONS_DESC']) )
+		echo 'Sales Conditions: <strong>' . $listing['FTR_SALE_CONDITIONS_DESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_HOAFEEINCLUDESDESC']) )
+		echo 'HOA Fees: <strong>' . $listing['FTR_HOAFEEINCLUDESDESC'] . '</strong><br />';
+
+	if( !empty($listing['FTR_RESTRICTIONSDESC']) )
+		echo 'Restrictions: <strong>' . $listing['FTR_RESTRICTIONSDESC'] . '</strong><br />';
+
+	echo '</p>';
+}
+
+function list_all_the_details($before,$between,$after) {
+	global $listing;
+
+	if( !empty($listing['FTR_REGION_DESC']) )
+		echo $before . 'Region Description: ' . $between . $listing['FTR_REGION_DESC'] . $after;
+
+	if( !empty($listing['FTR_SUBDIST_DESC']) )
+		echo $before . 'Sub District: ' . $between . $listing['FTR_SUBDIST_DESC'] . $after;
+
+	if( !empty($listing['FTR_CONSTRUCTION_DESC']) )
+		echo $before . 'Construction: ' . $between . $listing['FTR_CONSTRUCTION_DESC'] . $after;
+
+	if( !empty($listing['FTR_EXTERIOR_DESC']) )
+		echo $before . 'Exterior: ' . $between . $listing['FTR_EXTERIOR_DESC'] . $after;
+
+	if( !empty($listing['FTR_FLOORS_DESC']) )
+		echo $before . 'Floors: ' . $between . $listing['FTR_FLOORS_DESC'] . $after;
+
+	if( !empty($listing['FTR_FOUNDATION_DESC']) )
+		echo $before . 'Foundation: ' . $between . $listing['FTR_FOUNDATION_DESC'] . $after;
+
+	if( !empty($listing['FTR_MAIN_LEVEL_DESC']) )
+		echo $before . 'Main Level Description: ' . $between . $listing['FTR_MAIN_LEVEL_DESC'] . $after;
+
+	if( !empty($listing['FTR_LOWER_LEVEL_DESC']) )
+		echo $before . 'Lower Level Description: ' . $between . $listing['FTR_LOWER_LEVEL_DESC'] . $after;
+
+	if( !empty($listing['FTR_UPPER_LEVEL_DESC']) )
+		echo $before . 'Upper Level Description: ' . $between . $listing['FTR_UPPER_LEVEL_DESC'] . $after;
+
+	if( !empty($listing['FTR_WATER_SEWER_DESC']) )
+		echo $before . 'Sewer Description: ' . $between . $listing['FTR_WATER_SEWER_DESC'] . $after;
+
+	if( !empty($listing['FTR_SPRINKLERS_DESC']) )
+		echo $before . 'Sprinklers: ' . $between . $listing['FTR_SPRINKLERS_DESC'] . $after;
+
+	if( !empty($listing['FTR_WATERSOURCE_DESC']) )
+		echo $before . 'Water: ' . $between . $listing['FTR_WATERSOURCE_DESC'] . $after;
+
+	if( !empty($listing['FTR_UTILITIES_DESC']) )
+		echo $before . 'Utilities: ' . $between . $listing['FTR_UTILITIES_DESC'] . $after;
+
+	if( !empty($listing['FTR_ROOF_DESC']) )
+		echo $before . 'Roof: '  . $between . $listing['FTR_ROOF_DESC'] . $after;
+	
+	if( !empty($listing['FTR_POOL_DESC']) )
+		echo $before . 'Pool: ' . $between . $listing['FTR_POOL_DESC'] . $after;
+
+	if( !empty($listing['FTR_RECREATION_DESC']) )
+		echo $before . 'Recreation Area: ' . $between . $listing['FTR_RECREATION_DESC'] . $after;
+
+	if( !empty($listing['FTR_RENT_TYPE_DESC']) )
+		echo $before . 'Rent Description: ' . $between . $listing['FTR_RENT_TYPE_DESC'] . $after;
+
+	if( !empty($listing['FTR_RENT_SOURCE_DESC']) )
+		echo $before . 'Rent Source: ' . $between . $listing['FTR_RENT_SOURCE_DESC'] . $after;
+
+	if( !empty($listing['FTR_SHOPPING_DESC']) )
+		echo $before . 'Shopping Description: ' . $between . $listing['FTR_SHOPPING_DESC'] . $after;
+
+	if( !empty($listing['FTR_TRANSPORTATION_DESC']) )
+		echo $before . 'Transportation Description: ' . $between . $listing['FTR_TRANSPORTATION_DESC'] . $after;
+
+	if( !empty($listing['FTR_SPECIAL_FEATURE_DESC']) )
+		echo $before . 'Special Features: ' . $between . $listing['FTR_SPECIAL_FEATURE_DESC'] . $after;
+
+	if( !empty($listing['FTR_STYLE_DESC']) )
+		echo $before . 'Style of Home: ' . $between . $listing['FTR_STYLE_DESC'] . $after;
+
+	if( !empty($listing['FTR_TYPE_DESC']) )
+		echo $before . 'Type: ' . $between . $listing['FTR_TYPE_DESC'] . $after;
+
+	if( !empty($listing['FTR_FIREPLACE_DESC']) )
+		echo $before . 'Fireplace Description: ' . $between . $listing['FTR_FIREPLACE_DESC'] . $after;
+
+	if( !empty($listing['FTR_MASTER_BED_DESC']) )
+		echo $before . 'Master Bedroom: ' . $between . $listing['FTR_MASTER_BED_DESC'] . $after;
+
+	if( !empty($listing['FTR_MASTER_BATH_DESC']) )
+		echo $before . 'Master Bathroom: ' . $between . $listing['FTR_MASTER_BATH_DESC'] . $after;
+
+	if( !empty($listing['FTR_BATH_DESC']) )
+		echo $before . 'Bathroom: ' . $between . $listing['FTR_BATH_DESC'] . $after;
+
+	if( !empty($listing['FTR_KITCHEN_DESC']) )
+		echo $before . 'Kitchen: ' . $between . $listing['FTR_KITCHEN_DESC'] . $after;
+
+	if( !empty($listing['FTR_MICROWAVE_DESC']) )
+		echo $before . 'Microwave: ' . $between . $listing['FTR_MICROWAVE_DESC'] . $after;
+
+	if( !empty($listing['FTR_TRASH_COMPACTOR_DESC']) )
+		echo $before . 'Trash Compactor: ' . $between . $listing['FTR_TRASH_COMPACTOR_DESC'] . $after;
+
+	if( !empty($listing['FTR_RANGE_OVEN_DESC']) )
+		echo $before . 'Range Oven: ' . $between . $listing['FTR_RANGE_OVEN_DESC'] . $after;
+
+	if( !empty($listing['FTR_REFRIG_DESC']) )
+		echo $before . 'Refrigerator: ' . $between . $listing['FTR_REFRIG_DESC'] . $after;
+
+	if( !empty($listing['FTR_STOVE_INSERT_DESC']) )
+		echo $before . 'Stove: ' . $between . $listing['FTR_STOVE_INSERT_DESC'] . $after;
+
+	if( !empty($listing['FTR_LAUNDRY_DESC']) )
+		echo $before . 'Laundry: ' . $between . $listing['FTR_LAUNDRY_DESC'] . $after;
+
+	if( !empty($listing['FTR_OTHER_ROOM_DESC']) )
+		echo $before . 'Other Rooms: ' . $between . $listing['FTR_OTHER_ROOM_DESC'] . $after;
+
+	if( !empty($listing['FTR_MISCELLANEOUS_DESC']) )
+		echo $before . 'Misc: ' . $between . $listing['FTR_MISCELLANEOUS_DESC'] . $after;
+
+	if( !empty($listing['FTR_TOPOGRAPHY_DESC']) )
+		echo $before . 'Topography: ' . $between . $listing['FTR_TOPOGRAPHY_DESC'] . $after;
+
+	if( !empty($listing['FTR_OTHER_STRUCTURE_DESC']) )
+		echo $before . 'Other Structures: ' . $between . $listing['FTR_OTHER_STRUCTURE_DESC'] . $after;
+
+	if( !empty($listing['FTR_GARAGE_DESC']) )
+		echo $before . 'Garage: ' . $between . $listing['FTR_GARAGE_DESC'] . $after;
+
+	if( !empty($listing['FTR_PARKING_DESC']) )
+		echo $before . 'Parking: ' . $between . $listing['FTR_PARKING_DESC'] . $after;
+
+	if( !empty($listing['FTR_SALE_CONDITIONS_DESC']) )
+		echo $before . 'Sales Conditions: ' . $between . $listing['FTR_SALE_CONDITIONS_DESC'] . $after;
+
+	if( !empty($listing['FTR_HOAFEEINCLUDESDESC']) )
+		echo $before . 'HOA Fees: ' . $between . $listing['FTR_HOAFEEINCLUDESDESC'] . $after;
+
+	if( !empty($listing['FTR_RESTRICTIONSDESC']) )
+		echo $before . 'Restrictions: ' . $between . $listing['FTR_RESTRICTIONSDESC'] . $after;
+
+
+}
+
 
 
 /* Permalink */
-function the_listing_permalink() {
+function the_listing_permalink($return = false) {
 	global $listing;
-	echo site_url('/listing/' . $listing['OB_ID_PROP'] . '/');
+	//$permalink = get_option('permalink_structure');
+	if( $return )
+		return site_url('/?listing=' . $listing['OB_ID_PROP'] );
+	else
+		echo site_url('/?listing=' . $listing['OB_ID_PROP'] );
 }
 
 
@@ -465,6 +744,11 @@ function the_listing_permalink() {
 function get_the_office_id() {
 	global $listing;
 	return $listing['MLS_OFFICE_ID'];
+}
+
+function get_the_address() {
+	global $listing;
+	return $listing['ADDRESS'];
 }
 
 function get_the_agent_id() {
@@ -484,6 +768,8 @@ function get_the_listing_id() {
 	else
 		return $listing['OB_ID_PROP'];
 }
+
+
 
 
 
@@ -539,28 +825,36 @@ function detail_this_listing($str) {
 
 
 
-
-
 /* Paging */
 function previous_listings($str) {
+	//$permalink = get_option('permalink_structure');
 	$current_page = lp_current_page();
-	$pos = strpos($_SERVER["REQUEST_URI"], 'page');
-	$uri = substr($_SERVER["REQUEST_URI"], 0, $pos);
+	$req = substr( $_SERVER["REQUEST_URI"], stripos($_SERVER["REQUEST_URI"], '/?'), strlen($_SERVER["REQUEST_URI"]) );
+	$qv = array();
+	parse_str( ltrim($req, '/?'), $qv);
+	unset($qv['lpage']);
+	$path = '/?';
+	foreach($qv as $k => $v){ $path .= $k . '=' . $v . '&'; }
 	if( $current_page > 1 ) {
 		$min = $current_page - 1;
-		$path = ( $min > 1 ) ? $uri . 'page/' . $min . '/' : $uri;
+		if( $min > 1 ) { $path .= 'lpage=' . $min; }
 		echo '<a href="' . site_url($path) . '">' . $str . '</a>';
 	} 
 }
 
 function next_listings($str) {
+	//$permalink = get_option('permalink_structure');
 	$total_pages = lp_max_num_pages();
 	$current_page = lp_current_page();
-	$pos = strpos($_SERVER["REQUEST_URI"], 'page');
-	$uri = ( $pos ) ? substr($_SERVER["REQUEST_URI"], 0, $pos) : $_SERVER["REQUEST_URI"];
+	$req = substr( $_SERVER["REQUEST_URI"], stripos($_SERVER["REQUEST_URI"], '/?'), strlen($_SERVER["REQUEST_URI"]) );
+	$qv = array();
+	parse_str( ltrim($req, '/?'), $qv);
+	unset($qv['lpage']);
+	$path = '/?';
+	foreach($qv as $k => $v){ $path .= $k . '=' . $v . '&'; }
 	if( $current_page < $total_pages ) {
 		$add = $current_page + 1;
-		$path = $uri . 'page/' . $add . '/';
+		$path .= 'lpage=' . $add;
 		echo '<a href="' . site_url($path) . '">' . $str . '</a>';
 	}
 }
@@ -606,6 +900,13 @@ function the_image_wall($width, $height) {
 
 
 /* Look Ups */
+function city_state_select_menu() {
+	$cities = lp_lookup_cities();
+	foreach( $cities as $city ){
+		echo "<option value='" . urlencode($city['CITY_STATE']) . "'>" . $city['CITY_STATE'] . "</option>\n";
+	}
+}
+
 function prop_types_select_menu() {
 	$props = lp_lookup_property_types();
 	foreach( $props as $v ) {

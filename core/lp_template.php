@@ -25,4 +25,24 @@ function lp_template() {
 }
 add_action( 'template_redirect', 'lp_template' );
 
+
+function listingpress_search_form_inc() {
+	if( file_exists( WP_PLUGIN_DIR . '/listingpress/resources/html/artemis_search_form.php' ) )
+		include( WP_PLUGIN_DIR . '/listingpress/resources/html/artemis_search_form.php' );
+}
+add_action('listingpress_search_form','listingpress_search_form_inc');
+
+function listingpress_search_inc() {
+	if( file_exists( WP_PLUGIN_DIR . '/listingpress/resources/html/artemis_search.php' ) )
+		include( WP_PLUGIN_DIR . '/listingpress/resources/html/artemis_search.php' );
+}
+add_action('listingpress_search','listingpress_search_inc');
+
+function listingpress_single_inc() {
+	if( file_exists( WP_PLUGIN_DIR . '/listingpress/resources/html/artemis_single.php' ) )
+		include( WP_PLUGIN_DIR . '/listingpress/resources/html/artemis_single.php' );
+}
+add_action('listingpress_single','listingpress_single_inc');
+
+
 ?>

@@ -274,7 +274,7 @@ class LP_Query {
 			$this->is_lp_search = true;
 			$this->search_method = 'GetListingsCitySearchXML';
 		}
-		else if( !empty($qv['feed_id']) || !empty($qv['agent']) || !empty($qv['office']) ) {
+		else if( !empty($qv['feed_id']) || !empty($qv['agent_id']) || !empty($qv['office_id']) ) {
 			$this->is_feed_search = true;
 			$this->is_lp_search = true;
 			$this->search_method = 'GetListingsFeedSearchXML';
@@ -302,7 +302,7 @@ class LP_Query {
 		else if( !empty($qv['poly_points_csv']) ) {
 			$this->is_poly_search = true;
 			$this->is_lp_search = true;
-			$this->search_method = 'GetListingsPolyPointSearchXML';
+			$this->search_method = 'GetListingsPolySearchXML';
 		}
 		else if( !empty($qv['zip']) ) {
 			$this->is_zip_search = true;
@@ -450,13 +450,13 @@ class LP_Query {
 			$url['LifestyleProfile'] 	= ( !empty($q['lifestyle']) ) ? $q['lifestyle'] : '';
 			$url['DOM'] 				= ( !empty($q['dom']) ) ? $q['dom'] : '';
 			$url['FeedID'] 				= ( !empty($q['feed_id']) ) ? $q['feed_id'] : $lp_feed;
-			$url['AgentID'] 			= ( !empty($q['agent']) ) ? $q['agent'] : '';
-			$url['OfficeID']		 	= ( !empty($q['office']) ) ? $q['office'] : '';
+			$url['AgentID'] 			= ( !empty($q['agent_id']) ) ? $q['agent_id'] : '';
+			$url['OfficeID']		 	= ( !empty($q['office_id']) ) ? $q['office_id'] : '';
 			$url['AgentName'] 			= ( !empty($q['agent_name']) ) ? $q['agent_name'] : '';
 			$url['OfficeName'] 			= ( !empty($q['office_name']) ) ? $q['office_name'] : '';
 			$url['SpecialFormat'] 		= ( !empty($q['format']) ) ? $q['format'] : '';
 			$url['RecordLimit'] 		= ( isset($q['limit']) && !empty($q['limit']) ) ? $q['limit'] : '1500';
-			$url['Sort'] 				= ( !empty($q['sort']) ) ? $q['sort'] : '';
+			$url['Sort'] 				= ( !empty($q['sort']) ) ? $q['sort'] : 'SALE_PRICE DESC';
 			
 		}
 		
@@ -500,7 +500,7 @@ class LP_Query {
 		if ($this->listing_count > 0) {
 			$this->listing = $this->listings[0];
 		}
-
+		
 		return $this->listings;
 	}
 	

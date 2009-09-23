@@ -117,6 +117,7 @@ class LP_Lookups {
 	function cities() {
 		$url = $this->host . 'LookupCurrentCitiesByFeed?AccessToken=' . urlencode( $this->access ) . '&TrackingToken=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&FeedID=' . urlencode( $this->feed );
 		$this->process($url);
+		echo $url;
 		return $this->results;
 	}
 	

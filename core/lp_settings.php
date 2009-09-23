@@ -20,6 +20,8 @@ function lp_ajax_post_handler() {
 	$q['lp_zillow'] = ( isset($_POST['lp_zillow']) && !empty($_POST['lp_zillow']) ) ? $_POST['lp_zillow'] : $q['lp_zillow'];
 	$q['lp_education'] = ( isset($_POST['lp_education']) && !empty($_POST['lp_education']) ) ? $_POST['lp_education'] : $q['lp_education'];
 	$q['lp_menu_bar'] = $_POST['lp_menu_bar'];		
+	$q['lp_admin_email'] = ( isset($_POST['lp_admin_email']) && !empty($_POST['lp_admin_email']) ) ? $_POST['lp_admin_email'] : $q['lp_admin_email'];
+	$q['lp_lead_note'] = ( isset($_POST['lp_lead_note']) && !empty($_POST['lp_lead_note']) ) ? $_POST['lp_lead_note'] : $q['lp_lead_note'];
 	update_option( 'ListingPressQuery', $q );
 	echo 'Your settings have been successfully saved!';
 }
@@ -119,6 +121,20 @@ function lp_general_settings() {
 						&nbsp; <label for="lp_menu_bar">Would you like to display the ListingPress Menu Bar?</label>
 					</td>
 				</tr>
+				<tr valign="top">
+					<th scope="row"><label for="lp_admin_email">Send Emails Here:</label></th>
+					<td>
+						<input name="lp_admin_email" type="text" id="lp_admin_email" size="80" value="<?php echo $q['lp_admin_email']; ?>" />
+						<br />Send email communication to this address. (You can enter multiple email addresses separated by commas)
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row"><label for="lp_lead_note">Message When Someone Leaves A Note:</label></th>
+					<td>
+						<textarea name="lp_lead_note" id="lp_lead_note" cols="72" rows="6"><?php echo $q['lp_lead_note']; ?></textarea>
+						<br />A note to the consumer when they send you a message. Something like: Thanks for contacting me, I will get back to you soon. You can call me at 123-123-1234.
+					</td>
+				</tr>
 			</table>
 			
 			<p class="submit">
@@ -142,6 +158,8 @@ function lp_general_settings() {
 						lp_zillow: $('input#lp_zillow').val(),
 						lp_education: $('input#lp_education').val(),
 						lp_menu_bar: $('select#lp_menu_bar').val(),
+						lp_admin_email: $('#lp_admin_email').val(),
+						lp_lead_note: $('#lp_lead_note').val(),
 						cookie: encodeURIComponent(document.cookie),
 						_ajax_nonce: $('input#lp_settings_nonce').val()
 					},

@@ -4,7 +4,7 @@
 Plugin Name:  ListingPress
 Plugin URI:   http://www.listingpress.com/
 Description:  Easily embed Real Estate Listings into your blog.
-Version:      1.0.4
+Version:      1.0.5
 Author:       Jason Benesch
 Author URI:   http://www.jasonbenesch.com/
 
@@ -46,10 +46,6 @@ Copyright (C) 2008-2009 Jason Benesch
 	http://neosmart.net/dl.php?id=14
 	- For parts of the caching
 	
-	Viper 007
-	http://www.viper007bond.com/wordpress-plugins/vipers-video-quicktags/
-	- For shortcode and tinymce plugin
-	
 	Donncha O Caoimh
 	http://ocaoimh.ie/
 	- Way too much to mention. 
@@ -89,11 +85,6 @@ if( lp_is_registered() ) {
 	/* ListingPress User Authentication */
 	require_once( 'users/lp_user_auth.php' );
 	
-	/* Google Maps API */
-	if( defined('LP_GMAP_API') && constant('LP_GMAP_API') != '' ) {
-		require_once( 'google/lp_maps.php' );
-	}
-	
 	/* Zillow API */
 	if( defined('LP_ZILLOW_API') && constant('LP_ZILLOW_API') != '' ) {
 		require_once( 'zillow/zws_query.php' );
@@ -109,16 +100,32 @@ if( lp_is_registered() ) {
 	
 	/* Facebook Connect API */
 	//require_once( 'connect/fbconnect.php' );
-	/* Facebook Connect API */
 	
 	/* Education API */
 	//require_once( 'education/edu_query.php' );
 	//require_once( 'education/edu_functions.php' );
-	/* Education API */
 	
 	/* ListingPress Shortcode */
 	//require_once( 'shortcode/lp_shortcode.php' );
-	/* ListingPress Shortcode */
+	
+	/* ListingPress Sitemap */
+	require_once( 'sitemap/lp_sitemap.php' );
+	
+	/* ListingPress Featured Listing Widget */
+	require_once( 'widgets/lp_featured_listings.php' );
+	
+	/* ListingPress Visualizations */
+	//require_once( 'google/lp_visualizations.php' );
+	
+	/* Google Maps API */
+	//if( defined('LP_GMAP_API') && constant('LP_GMAP_API') != '' ) {
+		//require_once( 'google/lp_maps.php' );
+		//require_once( 'google/lp_custom_hoods.php' );
+	//}
+	
+	if( !is_admin() ) {
+		wp_enqueue_script('jquery');
+	} 
 		
 }
 

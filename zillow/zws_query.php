@@ -64,6 +64,16 @@ function get_zillow_deep_comps($zpid, $count) {
 	return $comps->results;
 }
 
+function get_zillow_children($countystate) {
+	$a = explode( ',', $countystate );
+	$args['z_method'] = 'children';
+	$args['county'] = $a[0];
+	$args['state'] = $a[1];
+	$args['z_childtype'] = 'city';
+	$children = new LP_Zillow($args);
+	return $children->results;
+}
+
 function get_zillow_demographics($a) {
 	$args['z_method'] = 'demographics';
 	if( isset($a['neighborhood']) && !empty($a['neighborhood']) ) {

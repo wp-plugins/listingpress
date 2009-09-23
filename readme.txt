@@ -4,7 +4,7 @@ Donate link: http://listingpress.com/registration
 Tags: real estate, listings, seo
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 
 ListingPress automatically embeds real estate listings on to a wordpress blog.
 
@@ -52,7 +52,13 @@ Visit http://listingpress.com/registration to get a registration code.
 * Updated lp_query.php -> added an if statement to lp_query->query to prevent the query if the query_string is blank.
 * Commented out the lp forms api until it is completely finished.
 
-
+= 1.0.5 =
+* Beefed up the core
+* Added Zillow library
+* Added Menu Bar
+* Added Shortcode
+* Added Google XML Sitemap action hook
+* Added a featured listing widget
 
 == Some ListingPress Features ==
 

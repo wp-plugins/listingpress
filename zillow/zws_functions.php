@@ -288,211 +288,706 @@ function zillow_deep_comps($zpid, $count) {
 	}
 }
 
+function list_zillow_cities($countystate) {
+	global $zhood_list;
+	$zhood_list = get_zillow_children($countystate);
+	return $zhood_list->response->list->region;
+}
+
+function z_neighborhood_count() {
+	global $zhood_list;
+	echo $zhood_list->response->list->count;
+}
+
+
 /*
  * Zillow GetDemographics API
  * http://www.zillow.com/howto/api/GetDemographics.htm
  * @params either regionid, city/state, neighborhood/city, or zip
  * @returns an array of neighborhood details
  */
-function zillow_neighborhood($neighborhood,$city) {
+function get_zillow_neighborhood($neighborhood,$city) {
+	global $zhood;
 	$send = array( 'neighborhood' => $neighborhood, 'city' => $city );
-	$dem = get_zillow_demographics($send);
-	return compile_zillow_data($dem);
+	$zhood = get_zillow_demographics($send);
 }
 
-function zillow_region($regionid) {
+function get_zillow_region($regionid) {
+	global $zhood;
 	$send = array( 'z_region_id' => $regionid );
-	$dem = get_zillow_demographics($send);
-	return compile_zillow_data($dem);
+	$zhood = get_zillow_demographics($send);
 }
 
-function zillow_city($city,$state) {
+function get_zillow_city($city,$state) {
+	global $zhood;
 	$send = array( 'city' => $city, 'state' => $state );
-	$dem = get_zillow_demographics($send);
-	return compile_zillow_data($dem);
+	$zhood = get_zillow_demographics($send);
 }
 
-function compile_zillow_data($obj) {
-	$return = array(
-		'region_id' => $obj->response->region->id,
-		'state' => $obj->response->region->state,
-		'city' => $obj->response->region->city,
-		'neighborhood' => $obj->response->region->neighborhood,
-		'links' => array(
-			'main' => $obj->response->links->main,
-			'affordability' => $obj->response->links->affordability,
-			'homes_and_real_estate' => $obj->response->links->homesandrealestate,
-			'people' => $obj->response->links->people,
-			'for_sale' => $obj->response->links->forSale,
-			'for_sale_by_owner' => $obj->response->links->forSaleByOwner,
-			'foreclosures' => $obj->response->links->foreclosures,
-			'recently_sold' => $obj->response->links->recentlySold
-		),
-		'avg_condo_value' => $obj->response->charts->chart[0]->url,
-		'avg_home_value' => $obj->response->charts->chart[1]->url,
-		'dollars_per_sqft' => $obj->response->charts->chart[2]->url,
-		'zindex_distribution' => $obj->response->charts->chart[3]->url,
-		'home_type' => $obj->response->charts->chart[4]->url,
-		'owners_vs_renters' => $obj->response->charts->chart[5]->url,
-		'home_size_sqft' => $obj->response->charts->chart[6]->url,
-		'year_built' => $obj->response->charts->chart[7]->url,
-		'for_sale_count' => $obj->response->market->forSaleCount,
-		'for_sale_by_owner_count' => $obj->response->market->forSaleByOwnerCount,
-		'recently_sold_count' => $obj->response->market->recentlySoldCount,
-		'new_construction_count' => $obj->response->market->newConstructionCount,
-		'foreclosure_count' => $obj->response->market->foreclosureCount,
-		'zillow_home_index_value' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[0]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[0]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[0]->values->nation
-		),
-		'one_year_change' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[1]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[1]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[1]->values->nation
-		),
-		'zestimate_per_sqft' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[2]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[2]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[2]->values->nation
-		),
-		'flips' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[3]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[3]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[3]->values->nation
-		),
-		'turnover' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[4]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[4]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[4]->values->nation
-		),
-		'property_tax' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[5]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[5]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[5]->values->nation
-		),
-		'median_condo_value' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[6]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[6]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[6]->values->nation
-		),
-		'median_single_family' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[7]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[7]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[7]->values->nation
-		),
-		'median_two_bed_home' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[8]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[8]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[8]->values->nation
-		),
-		'median_three_bed_home' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[9]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[9]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[9]->values->nation
-		),
-		'median_four_bed_home' => array(
-			'neighborhood' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[10]->values->neighborhood,
-			'city' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[10]->values->city,
-			'nation' => $obj->response->pages->page[0]->tables->table[0]->data->attribute[10]->values->nation
-		),
-		'census_price_per_sqft' => array(
-			'100-200' => $obj->response->pages->page[0]->tables->table[1]->data->attribute[0]->value,
-			'200-300' => $obj->response->pages->page[0]->tables->table[1]->data->attribute[1]->value,
-			'300-400' => $obj->response->pages->page[0]->tables->table[1]->data->attribute[2]->value,
-			'400-500' => $obj->response->pages->page[0]->tables->table[1]->data->attribute[3]->value,
-			'600-800' => $obj->response->pages->page[0]->tables->table[1]->data->attribute[4]->value
-		),
-		'owners' => array(
-			'neighborhood' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[0]->values->neighborhood->value,
-			'city' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[0]->values->city->value,
-			'nation' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[0]->values->nation->value
-		),
-		'renters' => array(
-			'neighborhood' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[1]->values->neighborhood->value,
-			'city' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[1]->values->city->value,
-			'nation' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[1]->values->nation->value
-		),
-		'median_home_size' => array(
-			'neighborhood' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[2]->values->neighborhood->value,
-			'city' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[2]->values->city->value,
-			'nation' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[2]->values->nation->value
-		),
-		'avg_year_built' => array(
-			'neighborhood' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[3]->values->neighborhood->value,
-			'city' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[3]->values->city->value,
-			'nation' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[3]->values->nation->value
-		),
-		'single_family_home' => array(
-			'neighborhood' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[4]->values->neighborhood->value,
-			'city' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[4]->values->city->value,
-			'nation' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[4]->values->nation->value
-		),
-		'condos' => array(
-			'neighborhood' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[5]->values->neighborhood->value,
-			'city' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[5]->values->city->value,
-			'nation' => $obj->response->pages->page[1]->tables->table[0]->data->attribute[5]->values->nation->value
-		),
-		'year_built' => array(
-			'1940-1959' => $obj->response->pages->page[1]->tables->table[1]->data->attribute[1]->value,
-			'1960-1979' => $obj->response->pages->page[1]->tables->table[1]->data->attribute[2]->value,
-			'1980-1999' => $obj->response->pages->page[1]->tables->table[1]->data->attribute[3]->value,
-			'2000' => $obj->response->pages->page[1]->tables->table[1]->data->attribute[0]->value
-		),
-		'census_home_size' => array(
-			'1000' => $obj->response->pages->page[1]->tables->table[2]->data->attribute[0]->value,
-			'1000-1400' => $obj->response->pages->page[1]->tables->table[2]->data->attribute[2]->value,
-			'1400-1800' => $obj->response->pages->page[1]->tables->table[2]->data->attribute[3]->value,
-			'1800-2400' => $obj->response->pages->page[1]->tables->table[2]->data->attribute[4]->value,
-			'2400-3600' => $obj->response->pages->page[1]->tables->table[2]->data->attribute[5]->value,
-			'3600' => $obj->response->pages->page[1]->tables->table[2]->data->attribute[1]->value
-		),
-		'census_home_type' => array(
-			'condo' => $obj->response->pages->page[1]->tables->table[3]->data->attribute[0]->value,
-			'other' => $obj->response->pages->page[1]->tables->table[3]->data->attribute[1]->value,
-			'single_family' => $obj->response->pages->page[1]->tables->table[3]->data->attribute[2]->value
-		),
-		'census_occupancy' => array(
-			'own' => $obj->response->pages->page[1]->tables->table[4]->data->attribute[0]->value,
-			'rent' => $obj->response->pages->page[1]->tables->table[4]->data->attribute[1]->value
-		),
-		'median_household_income' => array(
-			'neighborhood' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[0]->values->neighborhood,
-			'city' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[0]->values->city,
-			'nation' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[0]->values->nation
-		),
-		'single_males' => array(
-			'neighborhood' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[1]->values->neighborhood,
-			'city' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[1]->values->city,
-			'nation' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[1]->values->nation
-		),
-		'single_females' => array(
-			'neighborhood' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[2]->values->neighborhood,
-			'city' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[2]->values->city,
-			'nation' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[2]->values->nation
-		),
-		'median_age' => array(
-			'neighborhood' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[3]->values->neighborhood,
-			'city' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[3]->values->city,
-			'nation' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[3]->values->nation
-		),
-		'homes_with_kids' => array(
-			'neighborhood' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[4]->values->neighborhood,
-			'city' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[4]->values->city,
-			'nation' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[4]->values->nation
-		),
-		'avg_household_size' => array(
-			'neighborhood' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[5]->values->neighborhood,
-			'city' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[5]->values->city,
-			'nation' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[5]->values->nation
-		),
-		'avg_commute_time' => array(
-			'neighborhood' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[6]->values->neighborhood,
-			'city' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[6]->values->city,
-			'nation' => $obj->response->pages->page[2]->tables->table[0]->data->attribute[6]->values->nation
-		)
-	);
-	return $return;
+function z_region_id() {
+	global $zhood;
+	echo $zhood->response->region->id;
 }
+
+function z_state() {
+	global $zhood;
+	echo $zhood->response->region->state;
+}
+
+function z_city() {
+	global $zhood;
+	echo $zhood->response->region->city;
+}
+
+function z_neighborhood() {
+	global $zhood;
+	echo $zhood->response->region->neighborhood;
+}
+
+function z_main_link() {
+	global $zhood;
+	echo $zhood->response->links->main;
+}
+
+function z_affordability_link() {
+	global $zhood;
+	echo $zhood->response->links->affordability;
+}
+
+function z_homes_and_real_estate_link() {
+	global $zhood;
+	echo $zhood->response->links->homesandrealestate;
+}
+
+function z_people_link() {
+	global $zhood;
+	echo $zhood->response->links->people;
+}
+
+function z_for_sale_link() {
+	global $zhood;
+	echo $zhood->response->links->forSale;
+}
+
+function z_fsbo_link() {
+	global $zhood;
+	echo $zhood->response->links->forSaleByOwner;
+}
+
+function z_foreclosure_link() {
+	global $zhood;
+	echo $zhood->response->links->foreclosures;
+}
+
+function z_recently_sold_link() {
+	global $zhood;
+	echo $zhood->response->links->recentlySold;
+}
+
+function z_avg_condo_value_chart() {
+	global $zhood;
+	echo '<img src="' . $zhood->response->charts->chart[0]->url . '" />';
+}
+
+function z_avg_home_value_chart() {
+	global $zhood;
+	echo '<img src="' . $zhood->response->charts->chart[1]->url . '" />';
+}
+
+function z_dollars_per_sqft_chart() {
+	global $zhood;
+	echo '<img src="' . $zhood->response->charts->chart[2]->url . '" />';
+}
+
+function z_zindex_distribution_chart() {
+	global $zhood;
+	echo '<img src="' . $zhood->response->charts->chart[3]->url . '" />';
+}
+
+function z_home_type_chart() {
+	global $zhood;
+	echo '<img src="' . $zhood->response->charts->chart[4]->url . '" />';
+}
+
+function z_owners_vs_renters_chart() {
+	global $zhood;
+	echo '<img src="' . $zhood->response->charts->chart[5]->url . '" />';
+}
+
+function z_home_size_sqft_chart() {
+	global $zhood;
+	echo '<img src="' . $zhood->response->charts->chart[6]->url . '" />';
+}
+
+function z_year_built_chart() {
+	global $zhood;
+	echo '<img src="' . $zhood->response->charts->chart[7]->url . '" />';
+}
+
+function z_for_sale_count() {
+	global $zhood;
+	echo number_format( $zhood->response->market->forSaleCount );
+}
+
+function z_fsbo_count() {
+	global $zhood;
+	echo number_format( $zhood->response->market->forSaleByOwnerCount );
+}
+
+function z_recently_sold_count() {
+	global $zhood;
+	echo number_format( $zhood->response->market->recentlySoldCount );
+}
+
+function z_new_construction_count() {
+	global $zhood;
+	echo number_format( $zhood->response->market->newConstructionCount );
+}
+
+function z_foreclosure_count() {
+	global $zhood;
+	echo number_format( $zhood->response->market->foreclosureCount );
+}
+
+function z_home_index_value($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[0]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[0]->values->city;
+			//echo number_format( ($zhood->response->pages->page[0]->tables->table[0]->data->attribute[0]->values->city * 100), 2 ) . '%';
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[0]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[0]->values->city;
+		break;
+	}
+}
+
+function z_one_year_change($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[1]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[1]->values->city;
+			//echo number_format( ($zhood->response->pages->page[0]->tables->table[0]->data->attribute[1]->values->city * 100), 2 ) . '%';
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[1]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[1]->values->city;
+		break;
+	}
+}
+
+function z_estimate_per_sqft($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[2]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[2]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[2]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[2]->values->city;
+		break;
+	}
+}
+
+function z_flips($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[3]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[3]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[3]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[3]->values->city;
+		break;
+	}
+}
+
+function z_turnover($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[4]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[4]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[4]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[4]->values->city;
+		break;
+	}
+}
+
+function z_property_tax($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[5]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[5]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[5]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[5]->values->city;
+		break;
+	}	
+}
+
+function z_median_condo_value($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[6]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[6]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[6]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[6]->values->city;
+		break;
+	}
+}
+
+function z_median_single_family($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[7]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[7]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[7]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[7]->values->city;
+		break;
+	}
+}
+
+function z_median_two_bed_home($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[8]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[8]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[8]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[8]->values->city;
+		break;
+	}
+}
+
+function z_median_three_bed_home($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[9]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[9]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[9]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[9]->values->city;
+		break;
+	}
+}
+
+function z_median_four_bed_home($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[10]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[10]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[10]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[0]->data->attribute[10]->values->city;
+		break;
+	}
+}
+
+function z_census_price_per_sqft($a) {
+	global $zhood;
+	switch($a) {
+		case '100-200':
+			echo $zhood->response->pages->page[0]->tables->table[1]->data->attribute[0]->value;
+		break;
+		case '200-300':
+			echo $zhood->response->pages->page[0]->tables->table[1]->data->attribute[1]->value;
+		break;
+		case '300-400':
+			echo $zhood->response->pages->page[0]->tables->table[1]->data->attribute[2]->value;
+		break;
+		case '400-500':
+			echo $zhood->response->pages->page[0]->tables->table[1]->data->attribute[3]->value;
+		break;
+		case '600-800':
+			echo $zhood->response->pages->page[0]->tables->table[1]->data->attribute[4]->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[0]->tables->table[1]->data->attribute[0]->value;
+		break;
+	}
+}
+
+function z_owners($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[0]->values->neighborhood->value;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[0]->values->city->value;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[0]->values->nation->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[0]->values->city->value;
+		break;
+	}
+}
+
+function z_renters($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[1]->values->neighborhood->value;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[1]->values->city->value;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[1]->values->nation->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[1]->values->city->value;
+		break;
+	}
+}
+
+function z_median_home_size($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo number_format( $zhood->response->pages->page[1]->tables->table[0]->data->attribute[2]->values->neighborhood->value );
+		break;
+		case 'city':
+			echo number_format( $zhood->response->pages->page[1]->tables->table[0]->data->attribute[2]->values->city->value );
+		break;
+		case 'nation':
+			echo number_format( $zhood->response->pages->page[1]->tables->table[0]->data->attribute[2]->values->nation->value );
+		break;
+		default:
+			echo number_format( $zhood->response->pages->page[1]->tables->table[0]->data->attribute[2]->values->city->value );
+		break;
+	}
+}
+
+function z_avg_year_built($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[3]->values->neighborhood->value;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[3]->values->city->value;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[3]->values->nation->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[3]->values->city->value;
+		break;
+	}
+}
+
+function z_single_family_home($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[4]->values->neighborhood->value;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[4]->values->city->value;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[4]->values->nation->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[4]->values->city->value;
+		break;
+	}
+}
+
+function z_condos($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[5]->values->neighborhood->value;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[5]->values->city->value;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[5]->values->nation->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[0]->data->attribute[5]->values->city->value;
+		break;
+	}
+}
+
+function z_median_household_income($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[0]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[0]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[0]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[0]->values->city;
+		break;
+	}
+}
+
+function z_single_males($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[1]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[1]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[1]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[1]->values->city;
+		break;
+	}
+}
+
+function z_single_females($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[2]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[2]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[2]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[2]->values->city;
+		break;
+	}
+}
+
+function z_median_age($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[3]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[3]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[3]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[3]->values->city;
+		break;
+	}
+}
+
+function z_homes_with_kids($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[4]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[4]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[4]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[4]->values->city;
+		break;
+	}
+}
+
+function z_avg_household_size($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[5]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[5]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[5]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[5]->values->city;
+		break;
+	}
+}
+
+function z_avg_commute_time($a) {
+	global $zhood;
+	switch($a) {
+		case 'neighborhood':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[6]->values->neighborhood;
+		break;
+		case 'city':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[6]->values->city;
+		break;
+		case 'nation':
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[6]->values->nation;
+		break;
+		default:
+			echo $zhood->response->pages->page[2]->tables->table[0]->data->attribute[6]->values->city;
+		break;
+	}
+}
+
+function z_year_built($a) {
+	global $zhood;
+	switch($a) {
+		case '1940-1959':
+			echo $zhood->response->pages->page[1]->tables->table[1]->data->attribute[1]->value;
+		break;
+		case '1960-1979':
+			echo $zhood->response->pages->page[1]->tables->table[1]->data->attribute[2]->value;
+		break;
+		case '1980-1999':
+			echo $zhood->response->pages->page[1]->tables->table[1]->data->attribute[3]->value;
+		break;
+		case '2000+':
+			echo $zhood->response->pages->page[1]->tables->table[1]->data->attribute[0]->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[1]->data->attribute[0]->value;
+		break;
+	}
+}
+
+function z_census_home_size($a) {
+	global $zhood;
+	switch($a) {
+		case '1000':
+			echo $zhood->response->pages->page[1]->tables->table[2]->data->attribute[0]->value;
+		break;
+		case '1000-1400':
+			echo $zhood->response->pages->page[1]->tables->table[2]->data->attribute[2]->value;
+		break;
+		case '1400-1800':
+			echo $zhood->response->pages->page[1]->tables->table[2]->data->attribute[3]->value;
+		break;
+		case '1800-2400':
+			echo $zhood->response->pages->page[1]->tables->table[2]->data->attribute[4]->value;
+		break;
+		case '2400-3600':
+			echo $zhood->response->pages->page[1]->tables->table[2]->data->attribute[5]->value;
+		break;
+		case '3600+':
+			echo $zhood->response->pages->page[1]->tables->table[2]->data->attribute[1]->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[2]->data->attribute[0]->value;
+		break;
+	}
+}
+
+function z_census_home_type($a) {
+	global $zhood;
+	switch($a) {
+		case 'condo':
+			echo $zhood->response->pages->page[1]->tables->table[3]->data->attribute[0]->value;
+		break;
+		case 'other':
+			echo $zhood->response->pages->page[1]->tables->table[3]->data->attribute[1]->value;
+		break;
+		case 'single_family':
+			echo $zhood->response->pages->page[1]->tables->table[3]->data->attribute[2]->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[3]->data->attribute[2]->value;
+		break;
+	}
+}
+
+function z_census_occupancy($a) {
+	global $zhood;
+	switch($a) {
+		case 'own':
+			echo $zhood->response->pages->page[1]->tables->table[4]->data->attribute[0]->value;
+		break;
+		case 'rent':
+			echo $zhood->response->pages->page[1]->tables->table[4]->data->attribute[1]->value;
+		break;
+		default:
+			echo $zhood->response->pages->page[1]->tables->table[4]->data->attribute[0]->value;
+		break;
+	}
+}
+
+
 
 ?>
